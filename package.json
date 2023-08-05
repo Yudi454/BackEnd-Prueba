@@ -1,0 +1,19 @@
+{
+  "name": "backend-prueba",
+  "version": "1.0.0",
+  "description": "Practica Back End",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "request",
+    "response",
+    "PUT",
+    "POST",
+    "PATCH",
+    "DELETE"
+  ],
+  "author": "Lucas Yudi",
+  "license": "ISC"
+}
