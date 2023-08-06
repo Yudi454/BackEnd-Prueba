@@ -3,6 +3,7 @@ import "dotenv/config"
 import cors from "cors"
 import morgan from "morgan";
 
+
 console.log("Hello World");
 
 //Creamos una instancia de express 
@@ -41,3 +42,7 @@ app.get(`/test`, (req, res) => {
     //res.send("Aqui va la respuesta")
     res.status(200).json({message : "Aqui iria mi respuesta"}) 
 })
+
+//Usando las rutas desde routes
+
+app.use("/api", require("./src/routes/rutas"))
