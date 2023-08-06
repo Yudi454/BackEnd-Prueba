@@ -11,7 +11,6 @@ const canchaSchema = new Schema({
 },)
 
 
-console.log("Pase por canchamodel");
 
 const CanchaModel = mongoose.model("Canchas", canchaSchema)
 
