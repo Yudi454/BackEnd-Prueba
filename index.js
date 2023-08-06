@@ -3,6 +3,7 @@ import "dotenv/config"
 import cors from "cors"
 import morgan from "morgan";
 
+const conectDb = require("./src/database/db")
 
 console.log("Hello World");
 
@@ -15,12 +16,20 @@ app.set("port", process.env.PORT || 5050)
 
 //Inicializamos nuestro back end
 
-app.listen(app.get("port"), () => {
-    console.log(`Servidor corriendo en el puerto ${app.get(`port`)}`);
-}).on(`Error`, (error) => {
-    console.log(`Error`, error);
-    process.exit(1)
-})
+const initApp = async () =>{
+    try {
+        await conectDb()
+        app.listen(app.get("port"), () => {
+            console.log(`Servidor corriendo en el puerto ${app.get(`port`)}`);
+        }).on(`Error`, (error) => {
+        })
+    } catch (error) {
+        console.log(`Error`, error);
+        process.exit(1)
+    }
+}
+
+initApp()
 
 //MIDDLEWARES: Configuraciones extras del backend antes de que se ejecuten las rutas
 
