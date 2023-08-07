@@ -46,3 +46,4 @@ app.use(cors()) //Permite recibir peticiones remotras
 //Usando las rutas desde routes
 
 app.use("/api", require("./src/routes/rutas"))
+app.use("/api/usuarios", require("./src/routes/usuarios.rutas"))
