@@ -1,4 +1,5 @@
 const CanchaModel = require("../models/cancha.model")
+const bcrypt = require("bcrypt")
 
 //GET
 
@@ -27,7 +28,15 @@ const getPorId = async (req,res) => {
 //POST
 const crearCancha = async (req,res) =>{
     try {
-        const cancha = new CanchaModel(req.body)
+        //const cancha = new CanchaModel(req.body) //Crear cancha sin modificar la contraseña
+        const {nombre, capacidad, direccion, contraseña} = req.body
+        const hash = await bcrypt.hash(contraseña, 10)
+        const cancha = new CanchaModel({
+            nombre,
+            capacidad,
+            direccion,
+            contraseña: hash
+        });
         await cancha.save()
         console.log("Cancha Creada");
         res.status(200).json("Cancha Creada")

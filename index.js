@@ -43,15 +43,6 @@ app.use(express.urlencoded({extended:true})) //Permite recibir parametros en las
 app.use(morgan("dev")) //Nos brinda detalles de nuestra terminal
 app.use(cors()) //Permite recibir peticiones remotras
 
-//Primer endpoint o ruta para prueba 
-
-app.get(`/test`, (req, res) => {
-    //console.log(`Objeto req :`, req);
-    console.log("Entro en get test");
-    //res.send("Aqui va la respuesta")
-    res.status(200).json({message : "Aqui iria mi respuesta"}) 
-})
-
 //Usando las rutas desde routes
 
 app.use("/api", require("./src/routes/rutas"))
