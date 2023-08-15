@@ -2,8 +2,10 @@ import express, { response } from "express";
 import "dotenv/config"
 import cors from "cors"
 import morgan from "morgan";
+import comprobacionJWT from "./src/middleware/comprobacionJWT"
 
 const conectDb = require("./src/database/db")
+
 
 console.log("Hello World");
 
@@ -43,7 +45,16 @@ app.use(express.urlencoded({extended:true})) //Permite recibir parametros en las
 app.use(morgan("dev")) //Nos brinda detalles de nuestra terminal
 app.use(cors()) //Permite recibir peticiones remotras
 
+
 //Usando las rutas desde routes
 
 app.use("/api", require("./src/routes/rutas"))
 app.use("/api/usuarios", require("./src/routes/usuarios.rutas"))
+
+app.use("/privado", comprobacionJWT, require("./src/routes/admin"))
+
+//Middleware de manejo de errores centralizado
+
+app.use((error, req, res, next) =>{
+    res.status(error.status || 500 ).json({ error: error.message})
+})

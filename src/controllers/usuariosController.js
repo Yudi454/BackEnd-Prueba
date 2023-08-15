@@ -1,5 +1,6 @@
 const UsuarioModel = require("../models/usuario.model")
 const bcrypt = require("bcrypt")
+const jwt = require("jsonwebtoken")
 
 //Get
 
@@ -13,9 +14,22 @@ const traerUsuario = async (req,res) =>{
     }
 }
 
+//GET 1 Usuario
+
+const TraerUnUsuario = async (req,res,next) => {
+        const id = req.params.id
+        console.log(id);
+        const usuario = await UsuarioModel.findById(id)
+        {usuario ? (
+            res.status(200).json(usuario)
+        ):(
+            next(error)
+        )}
+}
+
 //POST
 
-const crearUsuario = async (req,res) =>{
+const crearUsuario = async (req,res,next) =>{
     try {
         const {nombre, email, contraseña} = req.body
         const hash = await bcrypt.hash(contraseña, 10)
@@ -27,7 +41,7 @@ const crearUsuario = async (req,res) =>{
         await usuario.save()
         res.status(200).json("Usuario creado")
     } catch (error) {
-        console.log(error);
+        next(error)
     }
 }
 
@@ -41,11 +55,27 @@ const login = async (req,res) => {
     if (!match) {
         return res.status(404).send("Usuario y/o contraseña incorrecta")
     }
-    res.status(200).send("Usuario encontrado")
+    //res.status(200).send("Usuario encontrado")
+
+    //Creamos el token
+    const token = jwt.sign({
+        id: user._id,
+        nombre: user.nombre
+    },
+    process.env.SECRET_KEY, //Clave secreta
+    {expiresIn: "1D"}
+    )
+    
+    res.header("auth-token", token).json({
+        error: null,
+        data: { token }
+    })
+
 }
 
 module.exports = {
     crearUsuario,
     login,
-    traerUsuario
+    traerUsuario,
+    TraerUnUsuario
 }
